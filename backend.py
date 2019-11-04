@@ -97,7 +97,10 @@ def main():
           elif pdns_host:
             dns_answer += "DATA\t%s\t%s\tA\t%s\t%s\t%s\n" % (qname,qclass,default_ttl,id,pdns_ipaddresses[role])
           elif valid_host and role in ['buildlogs','cloud']:
-            ip_answer = random.choice(ip_list)
+            if len(ip_list) > 0:
+              ip_answer = random.choice(ip_list)
+            else:
+              ip_answer = random.choice(nodes[role]['NA']['ipv4'])
             dns_answer += "DATA\t%s\t%s\tA\t%s\t%s\t%s\n" % (qname,qclass,default_ttl,id,ip_answer)      
           elif valid_host:
             ip_answer = random.choice(nodes[role]['NA']['ipv4'])
