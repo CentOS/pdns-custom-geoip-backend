@@ -12,7 +12,7 @@ backend_json = '/var/lib/centos-pdns/backend.json'
 default_ttl = '60'
 auth_zone = 'centos.org'
 pdns_servers = ['pdns1', 'pdns2', 'pdns3']
-pdns_ipaddresses = { 'pdns1': '108.61.16.227', 'pdns2': '85.236.43.108', 'pdns3': '67.219.148.138' }
+pdns_ipaddresses = { 'pdns1': '147.75.75.145', 'pdns2': '85.236.43.108', 'pdns3': '67.219.148.138' }
 geodb = geoip2.database.Reader('/usr/share/GeoIP/GeoLite2-City.mmdb')
 soa_ver = datetime.datetime.today().strftime('%Y%m%d%H')
 debug = False
@@ -96,6 +96,9 @@ def main():
             dns_answer += "DATA\t%s\t%s\tA\t%s\t%s\t%s\n" % (qname,qclass,default_ttl,id,ip_answer)
           elif pdns_host:
             dns_answer += "DATA\t%s\t%s\tA\t%s\t%s\t%s\n" % (qname,qclass,default_ttl,id,pdns_ipaddresses[role])
+          elif valid_host and role in ['buildlogs','cloud']:
+            ip_answer = random.choice(ip_list)
+            dns_answer += "DATA\t%s\t%s\tA\t%s\t%s\t%s\n" % (qname,qclass,default_ttl,id,ip_answer)      
           elif valid_host:
             ip_answer = random.choice(nodes[role]['NA']['ipv4'])
             dns_answer += "DATA\t%s\t%s\tA\t%s\t%s\t%s\n" % (qname,qclass,default_ttl,id,ip_answer)      
