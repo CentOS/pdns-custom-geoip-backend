@@ -42,7 +42,7 @@ def main():
       stderr.write("Received \n")
       stderr.write(data)
     query_type, qname, qclass, qtype, id, ip = data.split('\t')
-    role = qname.lower().split('.')[0]
+    role = qname.lower().replace('.'+auth_zone,'')
     try:
       country_code = geodb.city(ip).country.iso_code.upper()
       if not country_code:
